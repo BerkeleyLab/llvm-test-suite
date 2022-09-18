@@ -1,7 +1,6 @@
 module test_result_m
   !! Define tests for each scenario in which the Fortran 2018
   !! standard mandates type finalization.
-  use for_use_in_spec_expr_m, only: finalizable_t, component, was_finalized
   implicit none
 
   private
@@ -201,16 +200,7 @@ contains
   function specification_expression() result(outcome)
     !! Test conformance with Fortran 2018 standard clause 7.5.6.3, paragraph 6:
     !! "specification expression function result"
-    logical outcome
-
-    call try_it
-    outcome = was_finalized
-  contains
-    subroutine try_it
-      real tmp(component(finalizable_t(component=0))) !! Finalizes the finalizable_t function result
-      associate(avoid_unused_variable_warning => tmp)
-      end associate
-    end subroutine
+    outcome = .false.
   end function
 
   function intent_out() result(outcome)
