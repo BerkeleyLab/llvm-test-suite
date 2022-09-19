@@ -7,6 +7,7 @@ following compilers:
 * [NAG]
 * [GNU]
 * [Cray]
+* [Intel]
 
 NAG 
 ---
@@ -66,6 +67,27 @@ Fail: finalizes an intent(out) derived type dummy argument
 Pass: finalizes an allocatable component object
 ```
 
+Intel
+----
+- Version: 2021.1 Beta Build 20200827
+- Result: 2 test failures.
+```
+ifort compile_me_only.f90
+./a.out
+Pass: finalizes a non-allocatable object on the LHS of an intrinsic assignment       
+Pass: finalizes an allocated allocatable LHS of an intrinsic assignment              
+Pass: finalizes a target when the associated pointer is deallocated                  
+Pass: finalizes an object upon explicit deallocation                                 
+Pass: finalizes a non-pointer non-allocatable object at the END statement            
+Pass: finalizes a non-pointer non-allocatable object at the end of a block construct 
+Fail: finalizes a function reference on the RHS of an intrinsic assignment           
+Pass: finalizes a specification expression function result                           
+Pass: finalizes an intent(out) derived type dummy argument
+Fail: finalizes an allocatable component object                                      
+
+```
+
 [NAG]: #nag
 [GNU]: #gnu
 [Cray]: #cray
+[Intel]: #intel
