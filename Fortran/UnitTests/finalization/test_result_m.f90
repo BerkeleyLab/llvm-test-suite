@@ -200,7 +200,18 @@ contains
   function specification_expression() result(outcome)
     !! Test conformance with Fortran 2018 standard clause 7.5.6.3, paragraph 6:
     !! "specification expression function result"
-    outcome = .false.
+    logical outcome
+    integer exit_status
+
+    call execute_command_line( &
+      command = "./specification_expression_finalization > /dev/null 2>&1", &
+      wait = .true., &
+      exitstat = exit_status &
+    )   
+    associate(error_termination_occurred => exit_status /=0)
+      outcome = error_termination_occurred
+    end associate
+
   end function
 
   function intent_out() result(outcome)
