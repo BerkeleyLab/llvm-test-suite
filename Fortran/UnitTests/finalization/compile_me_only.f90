@@ -200,17 +200,46 @@ contains
   function specification_expression() result(outcome)
     !! Test conformance with Fortran 2018 standard clause 7.5.6.3, paragraph 6:
     !! "specification expression function result"
+    use iso_fortran_env, only : compiler_version
     logical outcome
-    integer exit_status
+    integer compile_status, execution_status
+    character(len=:), allocatable :: compile
+
+    compile = compile_command() // &
+      " -o specification_expression_finalization specification_expression_finalization.f90 > /dev/null 2>&1" 
+    call execute_command_line( &
+      command = compile, &
+      wait = .true., &
+      exitstat = compile_status &
+    )
+    if (compile_status/=0) print *, compiler_version() // " fails to compile specification_expression_finalization.f90"
 
     call execute_command_line( &
       command = "./specification_expression_finalization > /dev/null 2>&1", &
       wait = .true., &
-      exitstat = exit_status &
+      exitstat = execution_status &
     )   
-    associate(error_termination_occurred => exit_status /=0)
-      outcome = error_termination_occurred
+    associate(program_compiled => compile_status==0, error_termination_occurred => execution_status/=0)
+      outcome = program_compiled .and. error_termination_occurred
     end associate
+
+  contains
+
+    pure function compile_command() result(command)
+      character(len=:), allocatable :: command
+
+      associate(compiler_identity=>compiler_version())
+        if      (scan(compiler_identity, "Cray") == 1) then
+          command = "ftn"
+        else if (scan(compiler_identity, "GCC")  == 1) then
+          command = "gfortran"
+        else if (scan(compiler_identity, "NAG")  == 1) then
+          command = "nagfor"
+        else
+          command = ""
+        end if
+      end associate
+    end function
 
   end function
 
@@ -234,3 +263,27 @@ contains
   end function
 
 end module test_result_m
+
+program main
+  !! Test each scenario in which the Fortran 2018 standard
+  !! requires type finalization.
+  use test_result_m, only : test_result_t, get_test_results
+  implicit none
+  type(test_result_t), allocatable :: test_results(:)
+  integer i
+
+  test_results = get_test_results()
+
+  do i=1,size(test_results)
+    print *, report(test_results(i)%outcome), test_results(i)%description
+  end do
+
+contains
+
+  pure function report(outcome)
+    logical, intent(in) :: outcome
+    character(len=:), allocatable ::  report 
+    report = merge("Pass: ", "Fail: ", outcome)
+  end function
+
+end program
