@@ -52,8 +52,8 @@ contains
 
   subroutine finalize_specification_expression_result
     real tmp(component(finalizable_t(component=0))) !! Finalizes the finalizable_t function result
-    associate(eliminate_unused_variable_warning => tmp)
-    end associate
+    real eliminate_unused_variable_warning 
+    tmp = eliminate_unused_variable_warning 
   end subroutine
 
 end program
