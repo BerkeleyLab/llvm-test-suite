@@ -8,6 +8,7 @@ following compilers:
 * [GNU]
 * [Cray]
 * [Intel]
+* [NVIDIA]
 
 NAG 
 ---
@@ -68,7 +69,7 @@ Pass: finalizes an allocatable component object
 ```
 
 Intel
-----
+-----
 - Version: 2021.1 Beta Build 20200827
 - Result: 2 test failures.
 ```
@@ -87,7 +88,28 @@ Fail: finalizes an allocatable component object
 
 ```
 
+NVIDIA
+------
+- Version: 22.7-0 64-bit target on x86-64 Linux -tp zen3
+- Result: 2 test failures
+
+```
+nvfortran compile_me_only.f90
+./a.out
+Pass: finalizes a non-allocatable object on the LHS of an intrinsic assignment
+Fail: finalizes an allocated allocatable LHS of an intrinsic assignment
+Pass: finalizes a target when the associated pointer is deallocated
+Pass: finalizes an object upon explicit deallocation
+Pass: finalizes a non-pointer non-allocatable object at the END statement
+Pass: finalizes a non-pointer non-allocatable object at the end of a block construct
+Pass: finalizes a function reference on the RHS of an intrinsic assignment
+Pass: finalizes a specification expression function result
+Fail: finalizes an intent(out) derived type dummy argument
+Pass: finalizes an allocatable component object
+```
+
 [NAG]: #nag
 [GNU]: #gnu
 [Cray]: #cray
 [Intel]: #intel
+[NVIDIA]: #nvidia
