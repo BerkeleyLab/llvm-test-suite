@@ -229,7 +229,9 @@ contains
       character(len=:), allocatable :: command
 
       associate(compiler_identity=>compiler_version())
-        if      (scan(compiler_identity, "Cray") == 1) then
+        if      (scan(compiler_identity, "Intel") == 1) then
+          command = "ifort"
+        else if (scan(compiler_identity, "Cray") == 1) then
           command = "ftn"
         else if (scan(compiler_identity, "GCC")  == 1) then
           command = "gfortran"
