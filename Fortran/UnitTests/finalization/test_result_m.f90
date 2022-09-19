@@ -67,8 +67,8 @@ contains
     rhs%dummy = avoid_unused_variable_warning
     initial_tally = finalizations
     lhs = rhs ! finalizes lhs
-    associate(delta => finalizations - initial_tally)
-      outcome = delta==1
+    associate(finalization_tally => finalizations - initial_tally)
+      outcome = finalization_tally==1
     end associate
   end function
 
@@ -84,8 +84,8 @@ contains
     initial_tally = finalizations
     allocate(lhs)
     lhs = rhs ! finalizes lhs
-    associate(delta => finalizations - initial_tally)
-      outcome = delta==1
+    associate(finalization_tally => finalizations - initial_tally)
+      outcome = finalization_tally==1
     end associate
   end function
 
@@ -99,8 +99,8 @@ contains
     allocate(object_ptr, source=object_t(dummy=0))
     initial_tally = finalizations
     deallocate(object_ptr) ! finalizes object
-    associate(delta => finalizations - initial_tally)
-      outcome = delta==1
+    associate(finalization_tally => finalizations - initial_tally)
+      outcome = finalization_tally==1
     end associate
   end function
 
@@ -116,8 +116,8 @@ contains
     allocate(wrapper)
     allocate(wrapper%object)
     call finalize_intent_out_component(wrapper)
-    associate(delta => finalizations - initial_tally)
-      outcome = delta==1
+    associate(finalization_tally => finalizations - initial_tally)
+      outcome = finalization_tally==1
     end associate
 
   contains
@@ -178,8 +178,8 @@ contains
       type(object_t) object
       object % dummy = avoid_unused_variable_warning
     end block ! Finalizes object
-    associate(delta => finalizations - initial_tally)
-      outcome = delta==1
+    associate(finalization_tally => finalizations - initial_tally)
+      outcome = finalization_tally==1
     end associate
   end function
 
@@ -192,8 +192,8 @@ contains
 
     initial_tally = finalizations
     object = construct_object() ! finalizes object_t result
-    associate(delta => finalizations - initial_tally)
-      outcome = delta==1
+    associate(finalization_tally => finalizations - initial_tally)
+      outcome = finalization_tally==1
     end associate
   end function
 
@@ -223,8 +223,8 @@ contains
 
     initial_tally = finalizations
     call finalize_intent_out_arg(object)
-    associate(delta => finalizations - initial_tally)
-      outcome = delta==1
+    associate(finalization_tally => finalizations - initial_tally)
+      outcome = finalization_tally==1
     end associate
   contains
     subroutine finalize_intent_out_arg(output)
