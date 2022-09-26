@@ -225,7 +225,7 @@ contains
 
   contains
 
-    pure function compile_command() result(command)
+    function compile_command() result(command)
       character(len=:), allocatable :: command
 
       associate(compiler_identity=>compiler_version())
