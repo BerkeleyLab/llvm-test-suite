@@ -11,6 +11,7 @@ following compilers:
 * [NVIDIA]
 * [IBM]
 * [AMD]
+* [LLVM]
 
 NAG 
 ---
@@ -145,6 +146,12 @@ AMD
 - Version tested: 13.0.0 (AOCC_3.2.0-Build#128 2021_11_12)
 - Result: Fails to build due to an internal compiler error (ICE)
 
+
+LLVM
+----
+- Version tested: `git` commit `76911b5f75907eef53a30cc3`
+- Result: Fails with the error message `not yet implemented: derived type finalization`
+
 [NAG]: #nag
 [GNU]: #gnu
 [Cray]: #cray
@@ -152,3 +159,5 @@ AMD
 [NVIDIA]: #nvidia
 [IBM]: #ibm
 [AMD]: #amd
+[LLVM]: #llvm
+
