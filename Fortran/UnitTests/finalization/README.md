@@ -1,7 +1,7 @@
 Type Finalization Tests
 =======================
 
-Standalone compilation and execution steps and the resulting are below for the
+Standalone compilation and execution steps and results are below for the
 following compilers:
 
 * [NAG]
